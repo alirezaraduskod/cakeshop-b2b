@@ -26,7 +26,6 @@ jobs:
       - name: Install TypeScript (for capacitor.config.ts)
         run: npm i -D typescript
 
-      # ⬇️ این مرحله جدید است
       - name: Install Android platform package
         run: npm i @capacitor/android@latest
 
@@ -38,11 +37,12 @@ jobs:
           npx cap add android
           npx cap copy
 
-      - name: Setup Java
+      # 👇 اصلاح کلیدی: جاوا ۲۱ (AGP جدید به JDK 21 نیاز دارد)
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -53,7 +53,7 @@ jobs:
 
       - name: Build APK (debug)
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
