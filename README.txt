@@ -1,0 +1,1 @@
+Quick Start: npm i -> copy .env.example .env -> npm run build -> npm run cap:add -> npm run cap:copy -> npm run cap:open -> Build APK in Android Studio.
