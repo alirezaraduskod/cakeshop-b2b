@@ -2,8 +2,6 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
   build:
@@ -17,20 +15,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK components
-        run: |
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-
       - name: Install NPM deps
         run: npm ci || npm i
 
@@ -42,10 +26,25 @@ jobs:
       - name: Build web
         run: npm run build
 
-      - name: Capacitor add/copy
+      # ایجاد فولدر android و کپی فایل‌های وب داخلش
+      - name: Capacitor add/copy (create Android project)
         run: |
           npx cap add android
           npx cap copy
+
+      # حالا که فولدر android و فایل‌های Gradle وجود داره، جاوا و SDK رو ستاپ می‌کنیم
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK components
+        run: |
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Build APK (debug)
         working-directory: android
