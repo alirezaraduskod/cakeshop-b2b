@@ -23,16 +23,18 @@ jobs:
           npm i @capacitor/core@latest
           npm i -D @capacitor/cli@latest
 
+      # ⬇️ این خط مشکل شما را حل می‌کند
+      - name: Install TypeScript (for capacitor.config.ts)
+        run: npm i -D typescript
+
       - name: Build web
         run: npm run build
 
-      # ایجاد فولدر android و کپی فایل‌های وب داخلش
       - name: Capacitor add/copy (create Android project)
         run: |
           npx cap add android
           npx cap copy
 
-      # حالا که فولدر android و فایل‌های Gradle وجود داره، جاوا و SDK رو ستاپ می‌کنیم
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
