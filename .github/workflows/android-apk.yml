@@ -23,9 +23,12 @@ jobs:
           npm i @capacitor/core@latest
           npm i -D @capacitor/cli@latest
 
-      # ⬇️ این خط مشکل شما را حل می‌کند
       - name: Install TypeScript (for capacitor.config.ts)
         run: npm i -D typescript
+
+      # ⬇️ این مرحله جدید است
+      - name: Install Android platform package
+        run: npm i @capacitor/android@latest
 
       - name: Build web
         run: npm run build
