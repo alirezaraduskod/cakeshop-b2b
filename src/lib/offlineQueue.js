@@ -1,0 +1,1 @@
+import { set, get, del } from 'idb-keyval';const KEY='queuedOrders';export async function queueOrder(o){const list=(await get(KEY))||[];list.push(o);await set(KEY,list);}export async function readQueue(){return(await get(KEY))||[]}export async function clearQueue(){await del(KEY);}

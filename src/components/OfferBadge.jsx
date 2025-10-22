@@ -1,0 +1,1 @@
+export default function OfferBadge({percent}){if(!percent)return null;return(<span className='absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-0.5 rounded-full'>{percent}% OFF</span>)}

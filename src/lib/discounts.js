@@ -1,0 +1,2 @@
+export function computeDiscountedLine(price,qty,{basePercent=0,couponPercent=0,maxStack=50}={}){const subtotal=price*qty;const totalPercent=Math.min(basePercent+couponPercent,maxStack);const discount=Math.round(subtotal*totalPercent)/100;return{subtotal,discount,total:subtotal-discount,totalPercent};}
+export function findActiveCoupon(coupons=[],code){const now=Date.now();return coupons.find(c=>c.code?.toUpperCase()===code?.toUpperCase()&&(!c.startsAt||now>=c.startsAt)&&(!c.endsAt||now<=c.endsAt)&&c.active);}

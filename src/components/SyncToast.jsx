@@ -1,0 +1,1 @@
+export default function SyncToast({syncing,queuedCount}){if(!syncing&&!queuedCount)return null;return(<div className='fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-white shadow-lg border rounded-full px-4 py-2 text-sm'>{syncing?'در حال همگام‌سازی…':`سفارش‌های در صف: ${queuedCount}`}</div>)}
