@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,15 +30,24 @@ jobs:
       - name: Install Android platform package
         run: npm i @capacitor/android@latest
 
+      # ---- Build web (Vite) with Firebase env injected from Secrets
       - name: Build web
         run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY:        ${{ secrets.FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN:    ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID:     ${{ secrets.FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID:         ${{ secrets.FIREBASE_APP_ID }}
 
+      # ---- Create/copy Android project
       - name: Capacitor add/copy (create Android project)
         run: |
           npx cap add android
           npx cap copy
 
-      # 👇 اصلاح کلیدی: جاوا ۲۱ (AGP جدید به JDK 21 نیاز دارد)
+      # ---- JDK 21 (الزام ابزار جدید اندروید)
       - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
@@ -60,12 +70,3 @@ jobs:
         with:
           name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-- name: Build web
-  run: npm run build
-  env:
-    VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-    VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-    VITE_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-    VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-    VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-    VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
